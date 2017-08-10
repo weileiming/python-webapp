@@ -7,7 +7,7 @@
 ## 项目结构
 
 ```
-python-webapp/  		 <-- 根目录
+python-webapp/  	     <-- 根目录
 |
 +- backup/               <-- 备份目录
 |
