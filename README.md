@@ -26,3 +26,11 @@ python-webapp/           <-- 根目录
 +- LICENSE               <-- LICENSE
 ```
 
+## 开发环境
+
+- python 3.6.2
+- 第三方库
+  - [aiohttp](https://github.com/aio-libs/aiohttp)
+  - [jinja2](https://github.com/pallets/jinja)
+  - [aiomysql](https://github.com/aio-libs/aiomysql)
+
