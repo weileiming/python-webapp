@@ -30,11 +30,19 @@ python-webapp/           <-- 根目录
 
 - python 3.6.2
 - 第三方库
-  - [aiohttp](https://github.com/aio-libs/aiohttp)
-  - [jinja2](https://github.com/pallets/jinja)
-  - [aiomysql](https://github.com/aio-libs/aiomysql)
+  - [aiohttp](https://github.com/aio-libs/aiohttp) - Async http client/server framework (asyncio)
+  - [jinja2](https://github.com/pallets/jinja) - a template engine written in pure Python
+  - [aiomysql](https://github.com/aio-libs/aiomysql) - *aiomysql* is a library for accessing a MySQL database from the asyncio
 
+
+## 开发工具
+
+- Sublime Text 3
+  - [Anaconda](https://github.com/DamnWidget/anaconda) - Anaconda turns your Sublime Text 3 in a full featured Python development IDE
 
 ## 参考
 
 [廖雪峰老师的源码](https://github.com/michaelliao/awesome-python3-webapp)
+
+[awesome-python](https://github.com/vinta/awesome-python)
+
