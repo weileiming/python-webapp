@@ -7,6 +7,11 @@ import asyncio, logging
 
 import aiomysql
 
+# SQL日志输出
+def log(sql, args=()):
+    logging.info('SQL: %s' % sql)
+
+# 创建全局连接池
 async def create_pool(loop, **kw):
     logging.info('start create database connection pool...')
     global __pool
@@ -23,6 +28,14 @@ async def create_pool(loop, **kw):
         loop = loop
     )
 
+# 销毁连接池
+async def destory_pool():
+    global __pool
+    if __pool is not None:
+        __pool.close()
+        await __pool.wait_closed()
+
+# SELECT语句
 async def select(sql, args, size=None):
     log(sql, args)
     global __pool
@@ -36,6 +49,8 @@ async def select(sql, args, size=None):
         logging.info('rows returned: %s' % len(rs))
         return rs
 
+# INSERT、UPDATE、DELETE语句
+# 语句操作参数一样，定义通用执行函数
 async def execute(sql, args, autocommit=True):
     log(sql)
     async with __pool.get() as conn:
@@ -53,12 +68,14 @@ async def execute(sql, args, autocommit=True):
             raise
         return affected
 
+# 工具函数，构建insert语句占位符
 def create_args_string(num):
     L = []
     for n in range(num):
         L.append('?')
     return ', '.join(L)
 
+# Field类，保存表的字段名，字段类型，主键，默认值
 class Field(object):
     """docstring for Field"""
     def __init__(self, name, column_type, primary_key, default):
@@ -70,37 +87,38 @@ class Field(object):
     def __str__(self):
         return '<%s, %s:%s>' % (self.__class__.__name__, self.column_type, self.name)
 
-
+# 映射数据库varchar类型
 class StringField(Field):
     """docstring for StringField"""
     def __init__(self, name=None, primary_key=False, default=None, ddl='varchar(100)'):
         super().__init__(name, ddl, primary_key, default)
 
-
+# 映射数据库boolean类型
 class BooleanField(Field):
     """docstring for BooleanField"""
     def __init__(self, name=None, default=False):
         super().__init__(name, 'boolean', False, default)
 
-
+# 映射数据库bigint类型
 class IntegerField(Field):
     """docstring for IntegerField"""
     def __init__(self, name=None, primary_key=False, default=0):
         super().__init__(name, 'bigint', primary_key, default)
 
-
+# 映射数据库real类型
 class FloatField(Field):
     """docstring for FloatField"""
     def __init__(self, name=None, primary_key=False, default=0.0):
         super().__init__(name, 'real', primary_key, default)
 
-
+# 映射数据库text类型
 class TextField(Field):
     """docstring for TextField"""
     def __init__(self, name=None, default=None):
         super().__init__(name, 'text', False, default)
 
-
+# 定义Model的元类
+# 读取映射信息
 class ModelMetaclass(type):
     """docstring for ModelMetaclass"""
     def __new__(cls, name, bases, attrs):
