@@ -243,8 +243,9 @@ class Model(dict, metaclass=ModelMetaclass):
         return rs[0]['_num_']
 
     # 类方法
+    # 根据主键查找
     @classmethod
-    async def fnd(cls, pk):
+    async def find(cls, pk):
         ' find object by primary key. '
         rs = await select('%s where `%s`=?' % (cls.__select__, cls.__primaty_key__), [pk], 1)
         if len(rs) == 0:
