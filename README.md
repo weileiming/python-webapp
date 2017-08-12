@@ -28,7 +28,8 @@ python-webapp/           <-- 根目录
 
 ## 开发环境
 
-- python 3.6.2
+- [Python](https://www.python.org/downloads/) 3.6.2
+- [MySQL Community Server](https://dev.mysql.com/downloads/mysql/) 5.7.19
 - 第三方库
   - [aiohttp](https://github.com/aio-libs/aiohttp) - Async http client/server framework (asyncio)
   - [jinja2](https://github.com/pallets/jinja) - a template engine written in pure Python
@@ -37,7 +38,7 @@ python-webapp/           <-- 根目录
 
 ## 开发工具
 
-- Sublime Text 3
+- [Sublime Text 3](https://www.waitsun.com/?s=Sublime+Text)
   - [Anaconda](https://github.com/DamnWidget/anaconda) - Anaconda turns your Sublime Text 3 in a full featured Python development IDE
 
 ## 参考
