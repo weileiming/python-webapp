@@ -4,9 +4,8 @@
 __author__ = 'Will Wei'
 
 import asyncio
-import logging
-
 import aiomysql
+import logging
 
 
 # SQL日志输出
