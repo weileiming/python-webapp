@@ -1,4 +1,5 @@
 -- schema.sql
+-- $ mysql -u root -p < schema.sql
 
 drop database if exists awesome;
 
