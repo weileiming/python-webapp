@@ -38,8 +38,9 @@ python-webapp/           <-- 根目录
 
 ## 开发工具
 
-- [Sublime Text 3](https://www.waitsun.com/?s=Sublime+Text)
+- [Sublime Text 3](https://www.waitsun.com/?s=Sublime+Text) — 代码编辑器
   - [Anaconda](https://github.com/DamnWidget/anaconda) - Anaconda turns your Sublime Text 3 in a full featured Python development IDE
+- [Navicat Premium](https://www.waitsun.com/?s=Navicat+Premium) — 数据库客户端
 
 ## 参考
 
