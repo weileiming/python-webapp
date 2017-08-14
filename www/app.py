@@ -7,15 +7,19 @@ __author__ = 'Will Wei'
 async web application.
 '''
 
-import logging; logging.basicConfig(level=logging.INFO)
-
-import asyncio, os, json, time
+import asyncio
+import os
+import json
+import time
 from datetime import datetime
-
 from aiohttp import web
+import logging
+logging.basicConfig(level=logging.INFO)
+
 
 def index(request):
     return web.Response(content_type='text/html', body=b'<h1>Awesome</h1>')    # 增加content_type='text/html'，不然访问会直接下载
+
 
 async def init(loop):   # async替代@asyncio.coroutine装饰器，表示这是个异步运行的函数
     app = web.Application(loop=loop)    # loop=loop是处理用户参数用的，访问量少不添加代码照样运行，高并发时就会出问题

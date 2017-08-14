@@ -3,30 +3,34 @@
 
 __author__ = 'Will Wei'
 
-import asyncio, logging
+import asyncio
+import logging
 
 import aiomysql
+
 
 # SQL日志输出
 def log(sql, args=()):
     logging.info('SQL: %s' % sql)
+
 
 # 创建全局连接池
 async def create_pool(loop, **kw):
     logging.info('start create database connection pool...')
     global __pool
     __pool = await aiomysql.create_pool(
-        host = kw.get('host', 'localhost'),
-        port = kw.get('port', 3306),
-        user = kw['user'],
-        password = kw['password'],
-        db = kw['db'],
-        charset = kw.get('charset', 'utf8'),
-        autocommit = kw.get('autocommit', True),
-        maxsize = kw.get('maxsize', 10),
-        minsize = kw.get('minsize', 1),
-        loop = loop
+        host=kw.get('host', 'localhost'),
+        port=kw.get('port', 3306),
+        user=kw['user'],
+        password=kw['password'],
+        db=kw['db'],
+        charset=kw.get('charset', 'utf8'),
+        autocommit=kw.get('autocommit', True),
+        maxsize=kw.get('maxsize', 10),
+        minsize=kw.get('minsize', 1),
+        loop=loop
     )
+
 
 # 销毁连接池
 async def destory_pool():
@@ -34,6 +38,7 @@ async def destory_pool():
     if __pool is not None:
         __pool.close()
         await __pool.wait_closed()
+
 
 # SELECT语句
 async def select(sql, args, size=None):
@@ -48,6 +53,7 @@ async def select(sql, args, size=None):
                 rs = await cur.fetchall()
         logging.info('rows returned: %s' % len(rs))
         return rs
+
 
 # INSERT、UPDATE、DELETE语句
 # 3种SQL执行所需参数一样，定义通用执行函数
@@ -68,12 +74,14 @@ async def execute(sql, args, autocommit=True):
             raise
         return affected
 
+
 # 工具函数，构建insert语句占位符
 def create_args_string(num):
     L = []
     for n in range(num):
         L.append('?')
     return ', '.join(L)
+
 
 # Field类，保存表的字段名，字段类型，主键，默认值
 class Field(object):
@@ -88,11 +96,13 @@ class Field(object):
         # 表名, 字段名: 字段类型
         return '<%s, %s: %s>' % (self.__class__.__name__, self.name, self.column_type)
 
+
 # 映射数据库varchar类型
 class StringField(Field):
     """docstring for StringField"""
     def __init__(self, name=None, primary_key=False, default=None, ddl='varchar(100)'):
         super().__init__(name, ddl, primary_key, default)
+
 
 # 映射数据库boolean类型
 class BooleanField(Field):
@@ -100,11 +110,13 @@ class BooleanField(Field):
     def __init__(self, name=None, default=False):
         super().__init__(name, 'boolean', False, default)
 
+
 # 映射数据库bigint类型
 class IntegerField(Field):
     """docstring for IntegerField"""
     def __init__(self, name=None, primary_key=False, default=0):
         super().__init__(name, 'bigint', primary_key, default)
+
 
 # 映射数据库real类型
 class FloatField(Field):
@@ -112,11 +124,13 @@ class FloatField(Field):
     def __init__(self, name=None, primary_key=False, default=0.0):
         super().__init__(name, 'real', primary_key, default)
 
+
 # 映射数据库text类型
 class TextField(Field):
     """docstring for TextField"""
     def __init__(self, name=None, default=None):
         super().__init__(name, 'text', False, default)
+
 
 # 定义Model的元类，继承自type
 # 为一个数据库表映射成一个封装的类做准备，读取具体子类的映射信息
@@ -169,6 +183,7 @@ class ModelMetaclass(type):
         attrs['__update__'] = 'update `%s` set %s where `%s`=?' % (tableName, ', '.join(map(lambda f: '`%s`=?' % (mappings.get(f).name or f), fields)), primaryKey)
         attrs['__delete__'] = 'delete from `%s` where `%s`=?' % (tableName, primaryKey)
         return type.__new__(cls, name, bases, attrs)
+
 
 # 定义所有ORM映射的基类
 # Model类的子类映射数据库表
