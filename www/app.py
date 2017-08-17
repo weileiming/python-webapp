@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = 'Will Wei'
-
-'''
+"""
 async web application.
-'''
+"""
 
 import asyncio
 import os
@@ -15,6 +13,8 @@ from datetime import datetime
 from aiohttp import web
 import logging
 logging.basicConfig(level=logging.INFO)
+
+__author__ = 'Will Wei'
 
 
 def index(request):

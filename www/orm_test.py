@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = 'Will Wei'
-
-'''
+"""
 orm.py 的测试程序
 数据库自建，不知道怎么建数据库的请自行查阅资料
-'''
+"""
 
 import asyncio
 import orm
 from orm import Model, IntegerField, StringField
+
+__author__ = 'Will Wei'
 
 
 class User(Model):

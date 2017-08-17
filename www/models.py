@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = 'Will Wei'
-
-'''
+"""
 Models for user, blog, comment.
-'''
+"""
 
 import time
 import uuid
 from orm import Model, StringField, BooleanField, FloatField, TextField
+
+__author__ = 'Will Wei'
 
 
 def next_id():
