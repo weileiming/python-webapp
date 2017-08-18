@@ -9,16 +9,37 @@ import asyncio
 import os
 import json
 import time
+import orm
 from datetime import datetime
 from aiohttp import web
+from jinja2 import Environment, FileSystemLoader
+from coroweb import add_routes, add_static
 import logging
 logging.basicConfig(level=logging.INFO)
 
 __author__ = 'Will Wei'
 
 
-def index(request):
-    return web.Response(content_type='text/html', body=b'<h1>Awesome</h1>')    # 增加content_type='text/html'，不然访问会直接下载
+def init_jinja2(app, **kw):
+    logging.info('init jinja2...')
+    options = dict(
+        autoescape=kw.get('autoescape', True),
+        block_start_string=kw.get('block_start_string', '{%'),
+        block_end_string=kw.get('block_end_string', '%}'),
+        variable_start_string=kw.get('variable_start_string', '{{'),
+        variable_end_string=kw.get('variable_end_string', '}}'),
+        auto_reload=kw.get('auto_reload', True)
+    )
+    path = kw.get('path', None)
+    if path is None:
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    logging.info('set jinja2 templates path: %s' % path)
+    env = Environment(loader=FileSystemLoader(path), **options)
+    filters = kw.get('filters', None)
+    if filters is not None:
+        for name, f in filters.items():
+            env.filters[name] = f
+    app['__templating__'] = env
 
 
 async def init(loop):   # async替代@asyncio.coroutine装饰器，表示这是个异步运行的函数
