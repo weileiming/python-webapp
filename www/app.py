@@ -14,6 +14,7 @@ from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 from coroweb import add_routes, add_static
+from config import configs
 import logging
 # 日志级别关系：CRITICAL > ERROR > WARNING > INFO > DEBUG > NOTSET
 logging.basicConfig(level=logging.INFO)
@@ -150,7 +151,7 @@ def datetime_filter(t):
 
 
 async def init(loop):   # async替代@asyncio.coroutine装饰器，表示这是个异步运行的函数
-    await orm.create_pool(loop=loop, user='root', password='111111', db='awesome')
+    await orm.create_pool(loop=loop, **configs.db)
     # loop=loop是处理用户参数用的，访问量少不添加代码照样运行，高并发时就会出问题
     # middlewares(中间件)设置3个中间处理函数(装饰器)
     app = web.Application(loop=loop, middlewares=[logger_factory, response_factory])
