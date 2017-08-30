@@ -15,6 +15,7 @@ from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 from coroweb import add_routes, add_static
 from config import configs
+from handlers import cookie2user, COOKIE_NAME
 import logging
 # 日志级别关系：CRITICAL > ERROR > WARNING > INFO > DEBUG > NOTSET
 logging.basicConfig(level=logging.INFO)
@@ -57,6 +58,25 @@ async def logger_factory(app, handler):
         logging.info('Request: %s %s' % (request.method, request.path))
         return (await handler(request))
     return logger
+
+
+# 利用middle在处理URL之前，把cookie解析出来，并将登录用户绑定到request对象上，后续的URL处理函数就可以直接拿到登录用户
+async def auth_factory(app, handler):
+    async def auth(request):
+        logging.info('check user: %s %s' % (request.method, request.path))
+        request.__user__ = None
+        cookie_str = request.cookies.get(COOKIE_NAME)
+        if cookie_str:
+            # 验证cookie，并得到用户信息
+            user = await cookie2user(cookie_str)
+            if user:
+                logging.info('set current user: %s' % user.email)
+                request.__user__ = user
+        # # 如果请求路径是管理页面，但是用户不是管理员，将重定向到登陆页面
+        if request.path.startswith('/manage/') and (request.__user__ is None or not request.__user__.admin):
+            return web.HTTPFound('/signin')
+        return (await handler(request))
+    return auth
 
 
 # 数据处理，请求为post时起作用
@@ -154,7 +174,7 @@ async def init(loop):   # async替代@asyncio.coroutine装饰器，表示这是�
     await orm.create_pool(loop=loop, **configs.db)
     # loop=loop是处理用户参数用的，访问量少不添加代码照样运行，高并发时就会出问题
     # middlewares(中间件)设置3个中间处理函数(装饰器)
-    app = web.Application(loop=loop, middlewares=[logger_factory, response_factory])
+    app = web.Application(loop=loop, middlewares=[logger_factory, auth_factory, response_factory])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
     add_static(app)
