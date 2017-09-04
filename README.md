@@ -28,11 +28,12 @@ python-webapp/           <-- 根目录
 
 ## 运行
 
-本地预览：
+本地预览(请保证已安装MySQL --> [Mac安装教程](http://willwei.me/2017/08/09/%E8%AE%B0%E5%BD%95Mac%E5%AE%89%E8%A3%85MySQL%20Community%20Server/))：
 
 ```
 $ git clone https://github.com/WeiLeiming/python-webapp.git
 $ cd python-webapp/www
+$ pip3 install -r requirements.txt
 $ mysql -u root -p < schema.sql
 $ chmod +x pymonitor.py
 $ ./pymonitor.py app.py
@@ -49,6 +50,7 @@ $ ./pymonitor.py app.py
   - [jinja2](https://github.com/pallets/jinja) - a template engine written in pure Python
   - [aiomysql](https://github.com/aio-libs/aiomysql) - *aiomysql* is a library for accessing a MySQL database from the asyncio
   - [uikit](https://github.com/uikit/uikit) — A lightweight and modular front-end framework for developing fast and powerful web interfaces
+  - [Vue.js](https://github.com/vuejs/vue) — A progressive, incrementally-adoptable JavaScript framework for building UI on the web.
 
 
 ## 开发工具
