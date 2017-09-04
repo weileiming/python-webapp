@@ -32,8 +32,9 @@ python-webapp/           <-- 根目录
 
 ```
 $ git clone https://github.com/WeiLeiming/python-webapp.git
-$ cd python-webapp/www
+$ cd python-webapp
 $ pip3 install -r requirements.txt
+$ cd www
 $ mysql -u root -p < schema.sql
 $ chmod +x pymonitor.py
 $ ./pymonitor.py app.py
