@@ -384,7 +384,7 @@ async def api_comments(*, page='1'):
     return dict(page=p, comments=comments)
 
 
-# 获取某篇日志评论
+# 创建日志评论
 @post('/api/blogs/{id}/comments')
 async def api_create_comments(id, request, *, content):
     user = request.__user__
