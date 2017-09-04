@@ -1,0 +1,8 @@
+#
+####### requirements.txt #######
+#
+###### Requirements without Version Specifiers ######
+aiohttp
+jinja2
+aiomysql
+#
